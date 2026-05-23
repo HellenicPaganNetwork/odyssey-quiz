@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Which Character of the Odyssey Are You? · Hellenic Pagan Network</title>
+  <meta name="description" content="A sacred oracle drawn from Homer's Odyssey. Ten questions reveal which ancient character dwells within you.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0c0905;
+      --bg2:      #16100a;
+      --bg3:      #1e1710;
+      --gold:     #c8a227;
+      --gold2:    #e8c84a;
+      --terra:    #a84e2a;
+      --terra2:   #d4693a;
+      --cream:    #e8d5b0;
+      --parchment:#c4a882;
+      --muted:    #7a6848;
+      --dim:      #4a3a28;
+      --border:   #2e2218;
+      --border2:  #4a3220;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'EB Garamond', Georgia, serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ── ATMOSPHERIC BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 40%, rgba(168,78,42,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 85% 20%, rgba(200,162,39,0.05) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(200,162,39,0.04) 0%, transparent 50%);
+    }
+
+    /* Subtle dot grid overlay */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.4;
+      background-image: radial-gradient(circle, rgba(200,162,39,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ── LAYOUT ── */
+    .wrap {
+      position: relative; z-index: 1;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen { display: none; width: 100%; flex-direction: column; align-items: center; }
+    .screen.active { display: flex; animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MEANDER DIVIDER ── */
+    .divider {
+      width: 100%; max-width: 480px;
+      display: flex; align-items: center; gap: 12px;
+      margin: 24px 0;
+    }
+    .divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); }
+    .divider-gem { color: var(--gold); font-size: 0.7rem; opacity: 0.7; }
+
+    /* Greek key SVG border top/bottom */
+    .greek-bar {
+      width: 100%; height: 8px; margin: 8px 0; opacity: 0.35;
+      background-image: repeating-linear-gradient(
+        90deg,
+        var(--gold) 0, var(--gold) 8px, transparent 8px, transparent 10px,
+        var(--terra) 10px, var(--terra) 18px, transparent 18px, transparent 20px
+      );
+    }
+
+    /* ── BRAND TAG ── */
+    .brand-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      opacity: 0.75;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    /* ── INTRO SCREEN ── */
+    .intro-icon {
+      display: block;
+      margin-bottom: 20px;
+      line-height: 0;
+    }
+    @keyframes iconGlow {
+      0%,100% { filter: drop-shadow(0 0 20px rgba(200,162,39,0.35)); }
+      50%      { filter: drop-shadow(0 0 48px rgba(200,162,39,0.8)); }
+    }
+
+    .intro-title {
+      font-family: 'Philosopher', serif;
+      font-weight: 700;
+      font-size: clamp(1.9rem, 6vw, 3.4rem);
+      color: var(--gold);
+      text-align: center;
+      line-height: 1.14;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 60px rgba(200,162,39,0.35), 0 2px 0 rgba(0,0,0,0.8);
+      margin-bottom: 10px;
+    }
+
+    .intro-sub {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.22em;
+      color: var(--parchment);
+      opacity: 0.75;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .intro-body {
+      font-size: 1.13rem;
+      font-style: italic;
+      color: var(--parchment);
+      text-align: center;
+      max-width: 520px;
+      line-height: 1.85;
+      opacity: 0.9;
+      margin-bottom: 36px;
+    }
+
+    .intro-facts {
+      display: flex; gap: 28px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 36px;
+    }
+    .fact {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .fact::before { content: '◆'; color: var(--gold); font-size: 0.45rem; }
+
+    /* ── BUTTONS ── */
+    .btn-gold {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #0c0905;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 60%, var(--gold) 100%);
+      border: none;
+      padding: 14px 40px;
+      cursor: pointer;
+      clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-gold::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .btn-gold:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(200,162,39,0.35);
+    }
+    .btn-ghost {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: transparent;
+      border: 1px solid var(--border2);
+      padding: 11px 28px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-ghost:hover { border-color: var(--gold); background: rgba(200,162,39,0.08); }
+
+    .btn-patreon {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff;
+      background: #e85b46;
+      border: none;
+      padding: 13px 32px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.25s ease;
+    }
+    .btn-patreon:hover { background: #f06a55; transform: translateY(-2px); }
+
+    .btn-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
+
+    /* ── QUIZ SCREEN ── */
+    .progress-wrap { width: 100%; margin-bottom: 32px; }
+    .progress-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 8px;
+    }
+    .progress-q-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      color: var(--terra);
+      text-transform: uppercase;
+    }
+    .progress-count {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+    .progress-track {
+      width: 100%; height: 2px;
+      background: var(--border2);
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--terra), var(--gold));
+      transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+      position: relative;
+    }
+    .progress-fill::after {
+      content: '◆';
+      position: absolute; right: -5px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.5rem; color: var(--gold2);
+    }
+
+    /* Question card */
+    .q-card { width: 100%; animation: slideIn 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .q-card.out { animation: slideOut 0.3s ease both; }
+    @keyframes slideOut {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(-40px); }
+    }
+
+    .q-number {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--terra);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .q-text {
+      font-size: clamp(1.1rem, 3.2vw, 1.45rem);
+      font-style: italic;
+      color: var(--cream);
+      text-align: center;
+      line-height: 1.65;
+      margin-bottom: 32px;
+      max-width: 640px;
+    }
+
+    .options { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      background: rgba(30,23,16,0.7);
+      border: 1px solid var(--border2);
+      color: var(--parchment);
+      padding: 16px 22px;
+      cursor: pointer;
+      font-family: 'EB Garamond', serif;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      position: relative;
+      transition: all 0.22s ease;
+      backdrop-filter: blur(6px);
+    }
+    .option::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+      background: linear-gradient(180deg, var(--terra), var(--gold));
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform 0.22s ease;
+    }
+    .option:hover {
+      background: rgba(200,162,39,0.08);
+      border-color: rgba(200,162,39,0.5);
+      color: var(--cream);
+      transform: translateX(5px);
+    }
+    .option:hover::before { transform: scaleY(1); }
+
+    .option.chosen {
+      background: rgba(200,162,39,0.12);
+      border-color: var(--gold);
+      color: var(--cream);
+    }
+    .option.chosen::before { transform: scaleY(1); }
+
+    .opt-letter {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 3px;
+      opacity: 0.7;
+    }
+
+    /* Trait flash bubble */
+    .trait-flash {
+      position: fixed; top: 45%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.25em;
+      color: var(--gold2);
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 999;
+      animation: tFlash 0.9s ease forwards;
+      text-shadow: 0 0 20px rgba(200,162,39,0.8);
+    }
+    @keyframes tFlash {
+      0%   { opacity: 0; transform: translate(-50%, -35%); }
+      25%  { opacity: 1; transform: translate(-50%, -50%); }
+      70%  { opacity: 1; transform: translate(-50%, -50%); }
+      100% { opacity: 0; transform: translate(-50%, -65%); }
+    }
+
+    /* ── ORACLE / LOADING ── */
+    .oracle-screen { text-align: center; padding: 60px 20px; }
+    .oracle-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      margin-bottom: 32px;
+    }
+    .oracle-symbol {
+      font-size: 3.5rem;
+      display: block;
+      margin-bottom: 24px;
+      animation: oracleSpin 3s linear infinite;
+    }
+    @keyframes oracleSpin {
+      0%   { transform: rotate(0deg); filter: drop-shadow(0 0 12px rgba(200,162,39,0.4)); }
+      50%  { filter: drop-shadow(0 0 28px rgba(200,162,39,0.9)); }
+      100% { transform: rotate(360deg); filter: drop-shadow(0 0 12px rgba(200,162,39,0.4)); }
+    }
+    .oracle-dots span {
+      display: inline-block; width: 7px; height: 7px;
+      background: var(--gold); border-radius: 50%; margin: 0 4px;
+      animation: dotBeat 1.2s ease-in-out infinite;
+    }
+    .oracle-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .oracle-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotBeat {
+      0%,100% { opacity: 0.2; transform: scale(0.7); }
+      50%     { opacity: 1;   transform: scale(1.3); }
+    }
+
+    /* ── RESULT SCREEN ── */
+    .result-oracle-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.45em;
+      color: var(--terra);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .result-symbol {
+      font-size: 64px;
+      display: block; margin: 12px 0;
+      animation: resultGlow 4s ease-in-out infinite;
+    }
+    @keyframes resultGlow {
+      0%,100% { filter: drop-shadow(0 0 20px rgba(200,162,39,0.4)); }
+      50%     { filter: drop-shadow(0 0 50px rgba(200,162,39,0.85)); }
+    }
+
+    .result-name {
+      font-family: 'Philosopher', serif;
+      font-weight: 700;
+      font-size: clamp(2.2rem, 9vw, 4.2rem);
+      text-align: center;
+      line-height: 1.05;
+      letter-spacing: 0.03em;
+      text-shadow: 0 0 80px currentColor, 0 2px 0 rgba(0,0,0,0.9);
+      margin-bottom: 8px;
+    }
+
+    .result-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.24em;
+      opacity: 0.75;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .trait-pills {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-bottom: 28px;
+    }
+    .trait-pill {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0c0905;
+      padding: 5px 12px;
+      clip-path: polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);
+    }
+
+    .result-desc {
+      font-size: 1.1rem;
+      color: var(--parchment);
+      text-align: center;
+      line-height: 1.9;
+      max-width: 600px;
+      margin-bottom: 32px;
+      white-space: pre-line;
+    }
+
+    .result-quote-block {
+      background: rgba(30,23,16,0.65);
+      border-left: 2px solid var(--terra);
+      padding: 18px 24px;
+      max-width: 520px;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+    .result-quote-text {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 8px;
+    }
+    .result-quote-cite {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: var(--terra2);
+    }
+
+    /* Soul bars */
+    .soul-bars { width: 100%; max-width: 440px; margin-bottom: 32px; }
+    .soul-bar-row {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+    }
+    .soul-bar-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      width: 72px; flex-shrink: 0;
+    }
+    .soul-bar-track {
+      flex: 1; height: 3px; background: var(--border2); overflow: visible; position: relative;
+    }
+    .soul-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--terra), var(--gold));
+      width: 0%; transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+      position: relative;
+    }
+    .soul-bar-fill::after {
+      content: '';
+      position: absolute; right: -1px; top: -2px;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold2);
+      box-shadow: 0 0 6px var(--gold2);
+    }
+    .soul-bar-val {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      color: var(--gold);
+      width: 22px; text-align: right;
+    }
+
+    /* Secondary matches */
+    .match-section { width: 100%; max-width: 480px; margin-bottom: 36px; }
+    .match-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .match-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .match-chip {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--parchment);
+      border: 1px solid var(--border2);
+      padding: 6px 14px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .match-chip-pct { color: var(--gold); }
+
+    /* CTA card */
+    .cta-card {
+      border: 1px solid var(--border2);
+      background: rgba(22,16,10,0.7);
+      padding: 28px 32px;
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .cta-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .cta-card-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      color: var(--terra);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .cta-card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+    .cta-card-body {
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--parchment);
+      opacity: 0.8;
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .share-text {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    /* Footer */
+    .footer {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      color: var(--dim);
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .wrap { padding: 28px 16px 48px; }
+      .intro-title { font-size: 1.55rem; }
+      .result-name { font-size: 2rem; }
+      .option { padding: 14px 16px; font-size: 1rem; }
+      .cta-card { padding: 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ═══════════════════ INTRO ═══════════════════ -->
+  <div id="screen-intro" class="screen active">
+    <p class="brand-tag">Hellenic Pagan Network</p>
+    <span class="intro-icon">
+      <svg viewBox="0 0 120 64" width="110" height="58" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 24px rgba(200,162,39,0.55));animation:iconGlow 3.5s ease-in-out infinite;">
+        <!-- Hull body -->
+        <path d="M8 40 Q30 52 60 53 Q90 52 112 40 L108 35 Q88 47 60 48 Q32 47 12 35 Z" fill="#c8a227"/>
+        <!-- Ram (embolon) -->
+        <path d="M8 40 L0 37 L2 32 L10 34 Z" fill="#c8a227"/>
+        <!-- Upper hull rail -->
+        <path d="M12 35 Q60 27 108 35" stroke="#c8a227" stroke-width="1.5" fill="none" opacity="0.7"/>
+        <!-- Stern curve -->
+        <path d="M108 35 Q116 30 114 24 Q112 20 108 22" stroke="#c8a227" stroke-width="2" fill="none"/>
+        <!-- Stern ornament -->
+        <circle cx="113" cy="20" r="2" fill="#c8a227" opacity="0.8"/>
+        <!-- Mast -->
+        <line x1="52" y1="8" x2="52" y2="36" stroke="#c8a227" stroke-width="2.5"/>
+        <!-- Yard arm -->
+        <line x1="32" y1="12" x2="72" y2="12" stroke="#c8a227" stroke-width="1.5"/>
+        <!-- Sail -->
+        <path d="M34 13 Q52 11 70 13 L66 32 Q52 30 38 32 Z" fill="rgba(200,162,39,0.35)" stroke="#c8a227" stroke-width="1"/>
+        <!-- Sail stripe detail -->
+        <line x1="37" y1="18" x2="65" y2="19" stroke="#c8a227" stroke-width="0.8" opacity="0.5"/>
+        <line x1="36" y1="24" x2="64" y2="25" stroke="#c8a227" stroke-width="0.8" opacity="0.5"/>
+        <!-- Oars (port side, angled down) -->
+        <line x1="22" y1="37" x2="17" y2="50" stroke="#c8a227" stroke-width="1.5" opacity="0.75"/>
+        <line x1="34" y1="39" x2="29" y2="52" stroke="#c8a227" stroke-width="1.5" opacity="0.75"/>
+        <line x1="46" y1="40" x2="41" y2="53" stroke="#c8a227" stroke-width="1.5" opacity="0.75"/>
+        <line x1="58" y1="41" x2="53" y2="54" stroke="#c8a227" stroke-width="1.5" opacity="0.75"/>
+        <line x1="70" y1="40" x2="65" y2="53" stroke="#c8a227" stroke-width="1.5" opacity="0.75"/>
+        <line x1="82" y1="39" x2="77" y2="52" stroke="#c8a227" stroke-width="1.5" opacity="0.75"/>
+        <line x1="94" y1="37" x2="89" y2="50" stroke="#c8a227" stroke-width="1.5" opacity="0.75"/>
+        <!-- Eye of the ship -->
+        <circle cx="16" cy="38" r="3" fill="none" stroke="#c8a227" stroke-width="1.2" opacity="0.9"/>
+        <circle cx="16" cy="38" r="1.2" fill="#c8a227" opacity="0.9"/>
+        <!-- Waves below -->
+        <path d="M2 56 Q12 52 22 56 Q32 60 42 56 Q52 52 62 56 Q72 60 82 56 Q92 52 102 56 Q112 60 120 56" stroke="rgba(200,162,39,0.3)" stroke-width="1.2" fill="none"/>
+        <path d="M0 60 Q10 57 20 60 Q30 63 40 60 Q50 57 60 60 Q70 63 80 60 Q90 57 100 60 Q110 63 120 60" stroke="rgba(200,162,39,0.18)" stroke-width="1" fill="none"/>
+      </svg>
+    </span>
+    <h1 class="intro-title">Which Character of the<br>Odyssey Are You?</h1>
+    <p class="intro-sub">A Sacred Oracle of Character</p>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-gem">◈</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <p class="intro-body">
+      Homer's Odyssey is not a story that belongs to the past.<br>
+      It is a map of the soul — a living mythic landscape<br>
+      where every archetype still breathes, still calls to us.<br><br>
+      Ten questions. Eight ancient characters.<br>
+      The oracle will reveal the one that dwells within you.
+    </p>
+
+    <div class="intro-facts">
+      <span class="fact">10 Questions</span>
+      <span class="fact">8 Ancient Characters</span>
+      <span class="fact">Based on Homer's Odyssey</span>
+    </div>
+
+    <button class="btn-gold" onclick="startQuiz()">Begin Your Journey</button>
+
+    <div class="footer" style="margin-top:32px">
+      HELLENIC PAGAN NETWORK · A LIVING TRADITION
+    </div>
+  </div>
+
+  <!-- ═══════════════════ QUIZ ═══════════════════ -->
+  <div id="screen-quiz" class="screen">
+    <p class="brand-tag">Hellenic Pagan Network — The Oracle Speaks</p>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="progress-q-label" id="q-label">Question I of X</span>
+        <span class="progress-count" id="q-count">1 / 10</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="q-card-slot" style="width:100%;display:flex;flex-direction:column;align-items:center;"></div>
+
+    <div class="footer" style="margin-top:40px">HELLENIC PAGAN NETWORK</div>
+  </div>
+
+  <!-- ═══════════════════ ORACLE LOADING ═══════════════════ -->
+  <div id="screen-oracle" class="screen">
+    <div class="oracle-screen">
+      <p class="oracle-title">The Oracle Deliberates</p>
+      <span class="oracle-symbol">🌀</span>
+      <div class="oracle-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ RESULT ═══════════════════ -->
+  <div id="screen-result" class="screen">
+    <!-- dynamically populated -->
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+/* ═══════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════ */
+
+const ROMAN = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+
+const questions = [
+  {
+    text: "After twenty years of wandering, what would truly make your homecoming complete?",
+    options: [
+      { text: "To reclaim my throne, my property, and the respect that is rightfully mine.", traits: { intellect:2, action:2, passion:2, duty:3 } },
+      { text: "To sit again at the hearth with those whose souls are woven with my own.", traits: { duty:4, spirit:2, nature:1 } },
+      { text: "To recognize myself in the mirror of the land that shaped me.", traits: { intellect:3, nature:2, spirit:2 } },
+      { text: "To finally lay down my sword and know the silence of the olive grove.", traits: { nature:4, spirit:3, duty:1 } }
+    ]
+  },
+  {
+    text: "A monstrous adversary blocks your path — beast, tyrant, or impossible trial. How do you prevail?",
+    options: [
+      { text: "Through layered strategy, disguise, and the patience to strike unseen.", traits: { intellect:4, action:2 } },
+      { text: "With overwhelming courage. I would rather die fighting than live cowering.", traits: { passion:4, action:3 } },
+      { text: "I call upon the gods, for mortal strength alone cannot bend such odds.", traits: { spirit:4, duty:2 } },
+      { text: "I wait, watch, and let the enemy's own nature betray them.", traits: { intellect:3, nature:3, duty:1 } }
+    ]
+  },
+  {
+    text: "A stranger arrives at your door — ragged, nameless, salt-stained from the sea. What is your first act?",
+    options: [
+      { text: "I bathe them, feed them, and ask their name only after they are restored.", traits: { duty:4, spirit:2 } },
+      { text: "I question them first. The world is full of those who abuse hospitality.", traits: { intellect:4, action:1 } },
+      { text: "I offer what I can spare, but I protect my hearth fiercely.", traits: { nature:3, duty:3 } },
+      { text: "I welcome them openly — a god might wear the mask of the broken.", traits: { spirit:4, nature:2, duty:2 } }
+    ]
+  },
+  {
+    text: "You are offered an eternity of pleasure, youth, and forgetting — paradise without pain. Why might you refuse?",
+    options: [
+      { text: "Because a life without suffering is a life without meaning or growth.", traits: { intellect:3, spirit:2, duty:2 } },
+      { text: "Because the faces of those I love still call to me across the wine-dark sea.", traits: { duty:4, passion:2 } },
+      { text: "Because such gifts from immortals always carry a hidden, bitter price.", traits: { intellect:4, spirit:2 } },
+      { text: "I would not refuse. Transcendence is the highest aim of the awakened soul.", traits: { spirit:4, nature:2, passion:1 } }
+    ]
+  },
+  {
+    text: "The Fates offer you two destinies. Which do you choose?",
+    options: [
+      { text: "A long, quiet life — unknown, peaceful, surrounded by descendants.", traits: { nature:4, duty:2 } },
+      { text: "A short, blazing life — my name sung by poets until the stars go dark.", traits: { passion:5, action:3 } },
+      { text: "A life of trials and return — my story told, my home restored, my wisdom earned.", traits: { intellect:3, duty:3, action:2 } },
+      { text: "A life of sacred service — my deeds known only to the gods and the living earth.", traits: { spirit:4, nature:3 } }
+    ]
+  },
+  {
+    text: "Someone you love has been absent for twenty years. Rumors claim they are dead. How do you endure?",
+    options: [
+      { text: "I weave and unweave — I keep hope alive through patient, secret rituals of the soul.", traits: { intellect:3, duty:4, spirit:1 } },
+      { text: "I search the world for them, risking everything to find the truth.", traits: { action:4, passion:2, duty:1 } },
+      { text: "I accept the grief and slowly allow my heart to turn toward the future.", traits: { nature:3, spirit:2, passion:2 } },
+      { text: "I harden my heart and protect what remains of our home from those who would steal it.", traits: { duty:3, intellect:3, action:2 } }
+    ]
+  },
+  {
+    text: "Strangers have overrun your home, consuming your wealth and taking what is yours. How do you respond?",
+    options: [
+      { text: "I disguise myself, study them, and strike with merciless precision when the hour is ripe.", traits: { intellect:5, action:2 } },
+      { text: "I confront them openly, demanding justice through honorable combat.", traits: { action:4, passion:3, duty:1 } },
+      { text: "I endure their presence while secretly preserving the heart of what they cannot see.", traits: { intellect:3, duty:3, spirit:2 } },
+      { text: "I call upon divine wrath — let the gods themselves judge their insolence.", traits: { spirit:4, passion:3, action:1 } }
+    ]
+  },
+  {
+    text: "You descend into the House of Hades. Which shade do you most need to speak with?",
+    options: [
+      { text: "The prophet who holds the map of my future and the shape of my fate.", traits: { spirit:4, intellect:3 } },
+      { text: "The mother or ancestor whose love still reaches me across the veil.", traits: { nature:3, spirit:2, duty:3 } },
+      { text: "The fallen hero whose glory haunts my dreams and whose regrets I must understand.", traits: { passion:4, action:2, intellect:1 } },
+      { text: "The companion whose death I could not prevent — whose forgiveness I still seek.", traits: { duty:3, spirit:3, nature:1 } }
+    ]
+  },
+  {
+    text: "The gods have sent you storm after storm. What keeps you from surrendering to the waves?",
+    options: [
+      { text: "The vision of my home, burning in my mind like a lighthouse on a cliff.", traits: { intellect:3, duty:3, passion:1 } },
+      { text: "The sacred oaths I have sworn — to gods, to kin, and to myself.", traits: { duty:5, spirit:2 } },
+      { text: "A stubborn, wild refusal to let the cosmos defeat me. I rage against the gods themselves.", traits: { passion:5, action:2 } },
+      { text: "The simple, quiet love of the earth, the sea, and the breath still in my lungs.", traits: { nature:5, spirit:2 } }
+    ]
+  },
+  {
+    text: "How do you understand your relationship with the gods and the Fates?",
+    options: [
+      { text: "They are partners — I must prove myself worthy, and they will meet me halfway.", traits: { intellect:3, spirit:3, action:1 } },
+      { text: "They are vast, terrifying forces — awe and sacrifice are the only honest responses.", traits: { spirit:4, duty:2, nature:1 } },
+      { text: "They speak through signs, dreams, and the quiet voice within the soul.", traits: { spirit:4, intellect:2, nature:1 } },
+      { text: "Fate is absolute; the gods watch, but the thread is spun before my birth.", traits: { duty:3, spirit:2, passion:2 } }
+    ]
+  }
+];
+
+const TRAITS = ['intellect','action','passion','duty','spirit','nature'];
+
+const characters = {
+  odysseus: {
+    name: 'Odysseus',
+    subtitle: 'The Many-Minded Wanderer',
+    symbol: '⚓',
+    traits: ['Cunning','Strategic','Enduring','Homeward'],
+    color: '#c8a227',
+    profile: { intellect:9, action:6, passion:4, duty:6, spirit:2, nature:2 },
+    description: `Your soul is built for the long journey. You trust your mind above all else, turning each obstacle into an opportunity for strategy, each disguise into a revelation of truth. Survival demands patience over glory, and you know this in your bones.
+
+Like the wanderer of Ithaka, you carry your home inside you across every sea. The gods test you not because they wish to break you, but because they see something in your spirit that can bear the weight of the world and still find its way back.
+
+You are Polytropos — of many turnings, of many ways. The journey has not wounded you. It has been your initiation.`,
+    quote: `"I am Odysseus son of Laertes, known among all men for the craft of my designs, and my fame has gone up to the heavens."`,
+    citation: 'Odyssey, Book IX · tr. Lattimore'
+  },
+  penelope: {
+    name: 'Penelope',
+    subtitle: 'The Faithful Keeper of the Hearth',
+    symbol: '🌕',
+    traits: ['Patient','Faithful','Discerning','Steadfast'],
+    color: '#8ab0c8',
+    profile: { intellect:7, action:1, passion:4, duty:9, spirit:5, nature:2 },
+    description: `You are the still center around which storms revolve. While others chase glory or pleasure, you hold the hearth with a discipline that looks like patience but is, at its core, an act of profound resistance. You weave and unweave; you buy time with wisdom when strength alone is not enough.
+
+Your loyalty is not passivity. It is the most demanding form of courage there is. Like Penelope at her loom, you understand that some battles are fought not with spears but with the slow, quiet persistence of the soul that refuses to surrender what it loves.
+
+Others mistake your silence for submission. They have misread you entirely.`,
+    quote: `"...so she managed, with her stratagem, to put off the day of decision, and won credence from them all."`,
+    citation: 'Odyssey, Book II · tr. Lattimore'
+  },
+  telemachus: {
+    name: 'Telemachus',
+    subtitle: 'The Son Who Becomes Himself',
+    symbol: '⚔️',
+    traits: ['Courageous','Searching','Rising','Loyal'],
+    color: '#c87240',
+    profile: { intellect:4, action:8, passion:6, duty:6, spirit:2, nature:3 },
+    description: `You are in the middle of becoming. You carry the fire of youth and the ache of a destiny not yet fully claimed. You feel the absence of the initiating force that would help you step into your full power — and yet you keep moving, because that motion itself is the initiation.
+
+Like Telemachus setting sail to seek news of his father, you are discovering that the search and the finding are not separate things. The world you are building toward is real. The strength rising in you is real.
+
+Go. Ask your questions. Knock on the doors of kings. Your hour is coming, and it will not find you idle.`,
+    quote: `"...the spirit within him ripened, and he thought of his father, more than ever before."`,
+    citation: 'Odyssey, Book I · tr. Lattimore'
+  },
+  circe: {
+    name: 'Circe',
+    subtitle: 'The Enchantress Who Transforms',
+    symbol: '🌿',
+    traits: ['Sovereign','Wise','Transformative','Untamed'],
+    color: '#6aaa6a',
+    profile: { intellect:8, action:3, passion:5, duty:1, spirit:7, nature:8 },
+    description: `Everything that enters your world is changed by it. You are a deep current of knowledge and will, drawing boundaries that others call danger. Your intelligence is not cold — it is fire wrapped in beauty, and those who earn your trust discover a teacher, a healer, a guide through the hidden paths of the soul.
+
+Like Circe of Aiaia, you possess the gifts of transformation and the sovereignty of one who has fully inhabited their own nature. You cannot be approached carelessly, but those who approach with reverence discover a companion in the most ancient and living arts.
+
+You are neither servant nor tyrant. You are yourself, fully — and that is the rarest power of all.`,
+    quote: `"...Circe, the dread goddess of the braided hair, who speaks with human voice."`,
+    citation: 'Odyssey, Book X · tr. Lattimore'
+  },
+  calypso: {
+    name: 'Calypso',
+    subtitle: 'The Immortal Longing',
+    symbol: '🌊',
+    traits: ['Deep','Devoted','Aching','Elemental'],
+    color: '#4a88b0',
+    profile: { intellect:2, action:1, passion:8, duty:2, spirit:7, nature:9 },
+    description: `Your love runs deeper than time allows. You offer paradise and call it home, because for you, the beloved becomes the entire world. Like Kalypso on the island of Ogygia, you have known the particular grief of the heart that cannot hold what it truly desires.
+
+All the beauty and abundance in the cosmos cannot substitute for the freedom of the one you love. Yours is the wisdom of the eternal who falls for the mortal — a wound that teaches what immortality alone cannot.
+
+You are slowly learning what even the gods must learn: that true love is not captivity. It is the courageous act of releasing what was never yours to keep. Even in that loss, you are magnificent.`,
+    quote: `"...the divine Kalypso kept him in her hollow caverns, longing to have him for her own."`,
+    citation: 'Odyssey, Book I · tr. Lattimore'
+  },
+  tiresias: {
+    name: 'Tiresias',
+    subtitle: 'The Prophet Between Worlds',
+    symbol: '👁️',
+    traits: ['Prophetic','Liminal','Ancient','Truthful'],
+    color: '#9a7fc8',
+    profile: { intellect:7, action:0, passion:2, duty:4, spirit:10, nature:3 },
+    description: `You stand at the threshold between what was and what will be. You carry knowledge that others cannot bear, and you speak truth to those who come seeking it — even when truth is the harder gift. Like the shade of Teiresias in the House of Hades, your sight penetrates beyond the surfaces that deceive ordinary eyes.
+
+The gods speak through the patterns you perceive: in omens, in dreams, in the quality of silence before a storm. You live partly in this world and partly in another, and this dual citizenship gives you a wisdom earned through profound loss.
+
+Those who seek you rarely understand what they are truly asking for. But you answer honestly. That is your sacred office, and you have never abandoned it.`,
+    quote: `"...the spirit of Teiresias of Thebes came forward, carrying a staff of gold, and he knew me, and spoke."`,
+    citation: 'Odyssey, Book XI · tr. Lattimore'
+  },
+  nausicaa: {
+    name: 'Nausicaa',
+    subtitle: 'She Who Sees the Divine in the Broken',
+    symbol: '🌸',
+    traits: ['Compassionate','Perceptive','Gracious','Radiant'],
+    color: '#d4a8c8',
+    profile: { intellect:5, action:4, passion:4, duty:7, spirit:4, nature:8 },
+    description: `Your gift is recognition. You see through surfaces to the soul beneath, and you extend grace where others extend suspicion. Like Nausikaa on the shores of Skheria, you can encounter the wanderer at his most shattered — shipwrecked, stripped of everything, salt-stained — and still see him clearly.
+
+Your compassion is not naive. It is deeply discerning. You know that dignity is not a function of appearance or status, and that how we treat the stranger in their hour of need reveals the quality of our soul more than anything else we could say or do.
+
+You belong to the earth and to sacred hospitality. The gods smile on those like you — and sometimes, they themselves are the stranger at your shore.`,
+    quote: `"...white-armed Nausikaa, who was like the immortals in her beauty."`,
+    citation: 'Odyssey, Book VI · tr. Lattimore'
+  },
+  achilles: {
+    name: 'Achilles',
+    subtitle: 'The Flame That Burned Brightest',
+    symbol: '🔥',
+    traits: ['Intense','Glorious','Passionate','Uncompromising'],
+    color: '#c84a2a',
+    profile: { intellect:2, action:9, passion:10, duty:3, spirit:3, nature:1 },
+    description: `Even in death, your fire has not gone out. You chose the blazing life over the long one, and somewhere in the deepest part of you, you know you would make the same choice again. Like the shade of Achilleus in the asphodel meadows, you carry a glory that even Hades cannot extinguish.
+
+But you also carry the grief that comes with burning that bright. The same intensity that made you legendary made you vulnerable to loss beyond measure. You love with a ferocity that frightens others. You fight with everything you have, and the world does not forget those who live as you do.
+
+There is one truth that even the shade of Achilleus learned in the dark: the blazing life comes with a cost, and wisdom asks us to carry both the flame and the wound.`,
+    quote: `"...the spirit of swift-footed Achilleus...and he knew me, and spoke in winged words and sorrowing."`,
+    citation: 'Odyssey, Book XI · tr. Lattimore'
+  }
+};
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+
+let currentQ = 0;
+let userTraits = { intellect:0, action:0, passion:0, duty:0, spirit:0, nature:0 };
+let answers = []; // track chosen indices
+
+/* ═══════════════════════════════════════════
+   SCREEN HELPERS
+═══════════════════════════════════════════ */
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+  });
+  const el = document.getElementById(id);
+  el.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════
+   QUIZ FLOW
+═══════════════════════════════════════════ */
+
+function startQuiz() {
+  currentQ = 0;
+  userTraits = { intellect:0, action:0, passion:0, duty:0, spirit:0, nature:0 };
+  answers = [];
+  showScreen('screen-quiz');
+  renderQuestion(0);
+}
+
+function renderQuestion(n) {
+  const q = questions[n];
+  const slot = document.getElementById('q-card-slot');
+
+  // Update progress
+  document.getElementById('q-label').textContent = 'Question ' + ROMAN[n] + ' of X';
+  document.getElementById('q-count').textContent = (n+1) + ' / ' + questions.length;
+  document.getElementById('progress-fill').style.width = ((n / questions.length) * 100) + '%';
+
+  const letters = ['Alpha','Beta','Gamma','Delta'];
+
+  const html = `
+    <div class="q-card" id="q-card">
+      <p class="q-number">Oracle Question ${ROMAN[n]}</p>
+      <div class="divider"><div class="divider-line"></div><div class="divider-gem">◈</div><div class="divider-line"></div></div>
+      <p class="q-text">"${q.text}"</p>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <button class="option" onclick="selectAnswer(${n}, ${i})">
+            <span class="opt-letter">${letters[i]}</span>
+            ${opt.text}
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  slot.innerHTML = html;
+}
+
+function selectAnswer(qIndex, optIndex) {
+  if (answers[qIndex] !== undefined) return; // already answered
+
+  // Mark chosen
+  const opts = document.querySelectorAll('.option');
+  opts.forEach((o,i) => {
+    if(i === optIndex) o.classList.add('chosen');
+    o.style.pointerEvents = 'none';
+  });
+
+  answers[qIndex] = optIndex;
+
+  // Add traits
+  const chosen = questions[qIndex].options[optIndex];
+  for (const [trait, val] of Object.entries(chosen.traits)) {
+    userTraits[trait] = (userTraits[trait] || 0) + val;
+  }
+
+  // Show dominant trait flash
+  const dominant = Object.entries(chosen.traits).sort((a,b) => b[1]-a[1])[0];
+  if (dominant && dominant[1] > 0) {
+    flashTrait(dominant[0]);
+  }
+
+  // Advance
+  setTimeout(() => {
+    const card = document.getElementById('q-card');
+    if (card) card.classList.add('out');
+    setTimeout(() => {
+      if (qIndex + 1 < questions.length) {
+        currentQ = qIndex + 1;
+        renderQuestion(currentQ);
+      } else {
+        finishQuiz();
+      }
+    }, 320);
+  }, 600);
+}
+
+function flashTrait(traitName) {
+  const labels = {
+    intellect: '+ Intellect',
+    action:    '+ Action',
+    passion:   '+ Passion',
+    duty:      '+ Duty',
+    spirit:    '+ Spirit',
+    nature:    '+ Nature'
+  };
+  const el = document.createElement('div');
+  el.className = 'trait-flash';
+  el.textContent = labels[traitName] || '+' + traitName;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 950);
+}
+
+/* ═══════════════════════════════════════════
+   RESULT CALCULATION
+═══════════════════════════════════════════ */
+
+function finishQuiz() {
+  // Show progress at 100%
+  document.getElementById('progress-fill').style.width = '100%';
+  showScreen('screen-oracle');
+
+  setTimeout(() => {
+    const ranked = rankCharacters();
+    buildResultScreen(ranked);
+    showScreen('screen-result');
+  }, 2200);
+}
+
+function cosineSim(userVec, charProfile) {
+  let dot = 0, magUser = 0, magChar = 0;
+  for (const t of TRAITS) {
+    const u = Math.max(0, userVec[t] || 0);
+    const c = charProfile[t] || 0;
+    dot += u * c;
+    magUser += u * u;
+    magChar += c * c;
+  }
+  if (!magUser || !magChar) return 0;
+  return dot / (Math.sqrt(magUser) * Math.sqrt(magChar));
+}
+
+function rankCharacters() {
+  return Object.entries(characters)
+    .map(([key, ch]) => ({ key, ch, score: cosineSim(userTraits, ch.profile) }))
+    .sort((a,b) => b.score - a.score);
+}
+
+function pct(score) {
+  return Math.round(score * 100);
+}
+
+/* ═══════════════════════════════════════════
+   RESULT SCREEN BUILDER
+═══════════════════════════════════════════ */
+
+function buildResultScreen(ranked) {
+  const top = ranked[0];
+  const ch = top.ch;
+  const accentColor = ch.color;
+
+  // Max trait for bar scaling
+  const maxTrait = Math.max(...TRAITS.map(t => userTraits[t] || 0)) || 1;
+
+  const traitLabels = {
+    intellect: 'Intellect',
+    action:    'Action',
+    passion:   'Passion',
+    duty:      'Duty',
+    spirit:    'Spirit',
+    nature:    'Nature'
+  };
+
+  // Secondary matches (2nd and 3rd)
+  const secondaryHTML = ranked.slice(1,3).map(r =>
+    `<div class="match-chip">
+      ${r.ch.name} <span class="match-chip-pct">${pct(r.score)}%</span>
+    </div>`
+  ).join('');
+
+  // Trait bars
+  const barsHTML = TRAITS.map(t => {
+    const val = Math.max(0, userTraits[t] || 0);
+    const pctWidth = Math.round((val / maxTrait) * 100);
+    return `
+      <div class="soul-bar-row">
+        <span class="soul-bar-name">${traitLabels[t]}</span>
+        <div class="soul-bar-track">
+          <div class="soul-bar-fill" data-width="${pctWidth}%" style="width:0%"></div>
+        </div>
+        <span class="soul-bar-val">${val}</span>
+      </div>`;
+  }).join('');
+
+  // Trait pills
+  const pillsHTML = ch.traits.map(t =>
+    `<span class="trait-pill" style="background:${accentColor}">${t}</span>`
+  ).join('');
+
+  // Share text
+  const shareText = `I am ${ch.name} — ${ch.subtitle}.\n\nDiscover your character of the Odyssey at the Hellenic Pagan Network. #HellenicPaganNetwork #Odyssey #HPN`;
+
+  const html = `
+    <p class="brand-tag">Hellenic Pagan Network — The Oracle Has Spoken</p>
+
+    <p class="result-oracle-label">Your Character Is Revealed</p>
+    <span class="result-symbol">${ch.symbol}</span>
+
+    <h2 class="result-name" style="color:${accentColor}">${ch.name}</h2>
+    <p class="result-subtitle" style="color:${accentColor}">${ch.subtitle}</p>
+
+    <div class="trait-pills">${pillsHTML}</div>
+
+    <div class="divider" style="max-width:480px">
+      <div class="divider-line"></div>
+      <div class="divider-gem" style="color:${accentColor}">◈</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <p class="result-desc">${ch.description.replace(/\n/g, '\n\n')}</p>
+
+    <div class="result-quote-block" style="border-left-color:${accentColor}">
+      <p class="result-quote-text">${ch.quote}</p>
+      <cite class="result-quote-cite" style="color:${accentColor}">${ch.citation}</cite>
+    </div>
+
+    <div class="divider" style="max-width:400px">
+      <div class="divider-line"></div>
+      <div class="divider-gem">◈</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="soul-bars" style="max-width:440px;width:100%;margin-bottom:28px">
+      <p style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:var(--muted);margin-bottom:16px;text-align:center;text-transform:uppercase">Your Character's Traits</p>
+      ${barsHTML}
+    </div>
+
+    <div class="match-section">
+      <p class="match-label">Secondary Resonance</p>
+      <div class="match-row">${secondaryHTML}</div>
+    </div>
+
+    <div class="cta-card">
+      <p class="cta-card-label">Hellenic Pagan Network</p>
+      <p class="cta-card-title">Dive Deeper into the Living Mythology</p>
+      <p class="cta-card-body">
+        Myth cycles, deity essays, sacred rites, and the theology of Hellenic polytheism as a living, breathing tradition — not a museum piece.
+      </p>
+      <div class="btn-row">
+        <a href="https://www.patreon.com" class="btn-patreon" target="_blank">Join on Patreon</a>
+        <button class="btn-ghost" onclick="startQuiz()">Try Again</button>
+      </div>
+    </div>
+
+    <button class="btn-ghost" onclick="copyShare('${shareText.replace(/'/g,"\\'")}')">
+      ◇ Share Your Fate
+    </button>
+    <p id="share-confirm" style="font-family:'Cinzel',serif;font-size:0.6rem;color:var(--gold);letter-spacing:0.2em;margin-top:8px;opacity:0;transition:opacity 0.4s"></p>
+
+    <div class="footer" style="margin-top:40px">
+      HELLENIC PAGAN NETWORK · A LIVING TRADITION<br>
+      Based on Homer's Odyssey · tr. Richmond Lattimore
+    </div>
+  `;
+
+  const resultScreen = document.getElementById('screen-result');
+  resultScreen.innerHTML = html;
+
+  // Animate bars after render
+  setTimeout(() => {
+    document.querySelectorAll('.soul-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.width;
+    });
+  }, 300);
+}
+
+function copyShare(text) {
+  const decoded = text.replace(/\\'/g, "'");
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(decoded).then(() => {
+      const el = document.getElementById('share-confirm');
+      if(el) { el.textContent = '✓ Copied to clipboard'; el.style.opacity = '1'; setTimeout(()=>el.style.opacity='0',2500); }
+    });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = decoded; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    const el = document.getElementById('share-confirm');
+    if(el) { el.textContent = '✓ Copied to clipboard'; el.style.opacity = '1'; setTimeout(()=>el.style.opacity='0',2500); }
+  }
+}
+</script>
+</body>
+</html>
